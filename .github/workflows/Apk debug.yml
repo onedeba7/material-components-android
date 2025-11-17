@@ -1,0 +1,32 @@
+name: Android APK Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+
+    - name: Build Release APK
+      run: ./gradlew resguardRelease
+
+    - name: Create Release and Upload APK
+      uses: softprops/action-gh-release@v2
+      with:
+        files: app/build/outputs/apk/release/*.apk
+        generate_release_notes: true
+        token: ${{ secrets.RELEASE_TOKEN }}  # Use PAT instead of GITHUB_TOKEN
