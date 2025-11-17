@@ -22,11 +22,11 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build Release APK
-      run: ./gradlew resguardRelease
+      run: ./gradlew build
 
     - name: Create Release and Upload APK
       uses: softprops/action-gh-release@v2
       with:
         files: app/build/outputs/apk/release/*.apk
         generate_release_notes: true
-        token: ${{ secrets.RELEASE_TOKEN }}  # Use PAT instead of GITHUB_TOKEN
+        token: ${{ secrets.GITHUB_TOKEN }}  # Use PAT instead of GITHUB_TOKEN
